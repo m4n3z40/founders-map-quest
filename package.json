@@ -1,0 +1,25 @@
+{
+  "name": "founders-map-quest",
+  "version": "0.0.1",
+  "description": "CSV Importer that generates companies geolocation data in a comprehensible way.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/m4n3z40/founders-map-quest.git"
+  },
+  "keywords": [
+    "CSV",
+    "maps",
+    "react",
+    "challenge"
+  ],
+  "author": "Allan Baptista (allan.marques@ymail.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/m4n3z40/founders-map-quest/issues"
+  },
+  "homepage": "https://github.com/m4n3z40/founders-map-quest#readme"
+}
