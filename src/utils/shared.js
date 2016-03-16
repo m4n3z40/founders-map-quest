@@ -3,6 +3,6 @@ import allReducers from '../reducers/all';
 
 const appReducers = combineReducers(allReducers);
 
-export default function getStore(initialState) {
+export function getStore(initialState) {
     return createStore(appReducers, initialState);
 }

@@ -6,41 +6,31 @@ if (process.env.NODE_ENV === 'development') {
 require('babel-polyfill');
 const path = require('path');
 const express = require('express');
-const React = require('react');
-const ReactDOMServer = require('react-dom/server');
-const reactRedux = require('react-redux');
-const getStore = require('./utils/getStore').default;
-const renderingConfig = require('./config/rendering');
+const getStore = require('./utils/shared').getStore;
+const serverUtils = require('./utils/server');
 
 const server = express();
 
+// Compress server response with gzip
 server.use(require('compression')());
 
+// Expose all public files
 server.use('/public', express.static(path.join(__dirname, '../public'), {
     // 10 days on production, 0 on developmnet
     maxAge: process.env.NODE_ENV === 'production' ? 864000000 : 0
 }));
 
-const MainTemplateCmp = React.createElement(require('./layouts/Main').default);
-const mainTemplate = ReactDOMServer.renderToStaticMarkup(MainTemplateCmp);
-
-const Provider = React.createFactory(reactRedux.Provider);
-const App = React.createFactory(require('./components/App').default);
-
+// Catch all routes to render the App
 server.get('*', function renderServer(req, res) {
     const store = getStore();
-    const layoutMarkup = ReactDOMServer.renderToString(
-        Provider({store}, App())
-    );
-    const initialState = store.getState();
-    const finalMarkup = mainTemplate
-        .replace(renderingConfig.APP_CONTENT_KEY, layoutMarkup)
-        .replace(renderingConfig.INITIAL_STATE_KEY, JSON.stringify(initialState));
+    const appMarkup = serverUtils.renderApp({store});
+    const data = serverUtils.makeFullPageData(appMarkup, store.getState());
+    const fullPageMarkup = serverUtils.renderFullPage(data);
 
-    res.send(finalMarkup);
+    res.send(fullPageMarkup);
 });
 
-// Houston, we have loft off!!!
+// Houston, we have lift off!!!
 const serverInstance = server.listen(process.env.PORT || 3000, () => {
     const address = serverInstance.address();
 
