@@ -1,5 +1,6 @@
 import React from 'react';
 import MainHeader from './MainHeader';
+import CSVImporter from './CSVImporter';
 import Map from './Map';
 import DataTable from './data-table/DataTable';
 
@@ -131,18 +132,10 @@ export default function App() {
                         </div>
                     </aside>
                     <main className="main col-sm-8 col-xs-12 pull-left" role="main">
-                        <div className="csv-importer">
-                            <label htmlFor="csvImporterInput">
-                                Paste the CSV file contents on the text field below
-                                <br />
-                                OR drag and drop the CSV file onto the same field.
-                            </label>
-                            <textarea
-                                id="csvImporterInput"
-                                className="form-control"
-                                rows="6"
-                            />
-                        </div>
+                        <CSVImporter
+                            title="Paste the CSV data in the text field below OR drag
+                                   and drop the CSV file onto the same field."
+                        />
                         <Map title="Generated Map" style={{height: 300}} />
                         <DataTable title="GeneratedTable" data={mockTableData} />
                     </main>
