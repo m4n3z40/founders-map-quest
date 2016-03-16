@@ -1,5 +1,7 @@
 import React from 'react';
+import {getSeparatorsAsSelectFieldOptions} from '../utils/csv';
 import MainHeader from './MainHeader';
+import OptionsPanel from './options-panel/OptionsPanel';
 import CSVImporter from './CSVImporter';
 import Map from './Map';
 import DataTable from './data-table/DataTable';
@@ -17,119 +19,23 @@ const mockTableData = {
     body: CSVMatrix.slice(1)
 };
 
+const mockColumnsOptions = mockTableData.header.map(columnName => ({
+    value: columnName,
+    text: columnName
+}));
+
 export default function App() {
     return (
         <div className="app">
             <MainHeader brand="Founder's Map Quest" />
             <div className="app-content container-fluid">
                 <div className="row">
-                    <aside className="options-panel col-sm-4 col-xs-12 pull-right">
-                        <h3>Import Options</h3>
-                        <div className="options-panel-fields form-horizontal">
-                            <div className="form-group">
-                                <label
-                                    className="control-label col-md-4"
-                                    htmlFor="sltCsvSeparator"
-                                >
-                                    Separator
-                                </label>
-                                <div className="col-md-8">
-                                    <select className="form-control" id="sltCsvSeparator">
-                                        <option value=",">Comma</option>
-                                        <option value=";">Semicolon</option>
-                                        <option value="\t">Tab</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <label
-                                    className="control-label col-md-4"
-                                    htmlFor="sltLatitudeField"
-                                >
-                                    Latitude Column
-                                </label>
-                                <div className="col-md-8">
-                                    <select className="form-control" id="sltLatitudeField" />
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <label
-                                    className="control-label col-md-4"
-                                    htmlFor="sltStreetField"
-                                >
-                                    Marker Label Column
-                                </label>
-                                <div className="col-md-8">
-                                    <select className="form-control" id="sltStreetField" />
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <label
-                                    className="control-label col-md-4"
-                                    htmlFor="sltLongitudeField"
-                                >
-                                    Longitude Column
-                                </label>
-                                <div className="col-md-8">
-                                    <select className="form-control" id="sltLongitudeField" />
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <label
-                                    className="control-label col-md-4"
-                                    htmlFor="sltLongitudeField"
-                                >
-                                    Longitude Column
-                                </label>
-                                <div className="col-md-8">
-                                    <select className="form-control" id="sltLongitudeField" />
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <label
-                                    className="control-label col-md-4"
-                                    htmlFor="sltCityField"
-                                >
-                                    City Column
-                                </label>
-                                <div className="col-md-8">
-                                    <select className="form-control" id="sltCityField" />
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <label
-                                    className="control-label col-md-4"
-                                    htmlFor="sltCountryField"
-                                >
-                                    Country Column
-                                </label>
-                                <div className="col-md-8">
-                                    <select className="form-control" id="sltCountryField" />
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <label
-                                    className="control-label col-md-4"
-                                    htmlFor="sltStreetField"
-                                >
-                                    Street Column
-                                </label>
-                                <div className="col-md-8">
-                                    <select className="form-control" id="sltStreetField" />
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <label
-                                    className="control-label col-md-4"
-                                    htmlFor="sltPostalCodeField"
-                                >
-                                    Postal Code Column
-                                </label>
-                                <div className="col-md-8">
-                                    <select className="form-control" id="sltPostalCodeField" />
-                                </div>
-                            </div>
-                        </div>
+                    <aside className="options-panel-wrapper col-sm-4 col-xs-12 pull-right">
+                        <OptionsPanel
+                            title="Import Options"
+                            separatorOptions={getSeparatorsAsSelectFieldOptions()}
+                            columnsOptions={mockColumnsOptions}
+                        />
                     </aside>
                     <main className="main col-sm-8 col-xs-12 pull-left" role="main">
                         <CSVImporter
