@@ -20,8 +20,7 @@
     "start": "npm run start:server & npm run start:client"
   },
   "pre-commit": [
-    "lint",
-    "build:prod"
+    "lint"
   ],
   "pre-push": [
     "test"
