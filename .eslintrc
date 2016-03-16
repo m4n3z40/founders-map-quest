@@ -1,0 +1,15 @@
+// Add rule overrides as needed.
+{
+    "extends": "airbnb",
+    "plugins": [
+        "babel"
+    ],
+    "rules": {
+        "indent": [2, 4],
+        "comma-dangle": [2, "never"],
+        "object-curly-spacing": [2, "never"],
+        "no-param-reassign": [2, {"props": false}],
+        "react/jsx-indent-props": [2, 4],
+        "react/jsx-no-bind": [1, {"allowBind": true, "ignoreRefs": true}]
+    }
+}

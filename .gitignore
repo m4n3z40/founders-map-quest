@@ -31,3 +31,15 @@ node_modules
 
 # Optional REPL history
 .node_repl_history
+
+.idea/
+
+# dynamicly generated files
+public/js
+
+# eslint file
+.eslintcache
+
+# Created by .ignore support plugin (hsz.mobi)
+
+.DS_Store

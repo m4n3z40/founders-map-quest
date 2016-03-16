@@ -1,0 +1,13 @@
+#Ignore node modules folder
+node_modules/
+
+#ignore public built files dir
+public/
+
+#ignore tests dir
+test/
+
+#ignore dynamic dir
+lib/
+
+src/server.js
