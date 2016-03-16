@@ -17,11 +17,14 @@ export default function Main() {
 
                 <title>Founder's Map Quest</title>
                 <link rel="stylesheet" href="/public/vendors/bootstrap/css/bootstrap.min.css" />
+                <link rel="stylesheet" href="/public/vendors/leaflet/leaflet.css" />
             </head>
             <body>
                 <div id={ROOT_ELEMENT_ID}>
                     {APP_CONTENT_KEY}
                 </div>
+
+                <script src="/public/vendors/leaflet/leaflet.js"></script>
                 <script src={`/public/js/app.js?dt=${deployTime}`}></script>
                 <script>
                     {`window.${INITIAL_STATE_VARNAME} = ${INITIAL_STATE_KEY};`}
