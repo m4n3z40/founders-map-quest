@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react';
 import cx from 'classnames';
 
-export function MainHeader({className, brand, brandHref}) {
+export default function MainHeader({className, brand, brandHref}) {
     return (
         <header className={cx('main-header', className)}>
             <nav className="navbar navbar-default">
