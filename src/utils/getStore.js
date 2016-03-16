@@ -1,8 +1,8 @@
 import {combineReducers, createStore} from 'redux';
 import allReducers from '../reducers/all';
 
-export default function getStore(initialState) {
-    const appReducers = combineReducers(allReducers);
+const appReducers = combineReducers(allReducers);
 
+export default function getStore(initialState) {
     return createStore(appReducers, initialState);
 }
