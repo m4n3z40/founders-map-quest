@@ -12,7 +12,7 @@
     "build:client": "browserify src/client.js -t babelify -d | exorcist public/js/app.js.map > public/js/app.js",
     "uglify:client": "uglifyjs public/js/app.js --compress --mangle --screw-ie8 --in-source-map public/js/app.js.map --source-map-include-sources --source-map public/js/app.js.map --source-map-url app.js.map --output public/js/app.js",
     "build": "npm run build:server & npm run build:client",
-    "build:prod": "npm run build && uglify:client",
+    "build:prod": "npm run build && npm run uglify:client",
     "postbuild:prod": "git add .",
     "start:server": "if [ \"$NODE_ENV\" == \"development\" ]; then nodemon ./src/server.js; else node ./lib/server.js; fi",
     "prestart:client": "npm run prepare-build-dirs",
@@ -20,11 +20,11 @@
     "start": "npm run start:server & npm run start:client"
   },
   "pre-commit": [
-    "lint"
+    "lint",
+    "build:prod"
   ],
   "pre-push": [
-    "test",
-    "build:prod"
+    "test"
   ],
   "repository": {
     "type": "git",
