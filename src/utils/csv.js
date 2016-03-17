@@ -1,18 +1,12 @@
-export const CSV_SEPARATOR_TAB = Symbol.for('csv_separator_tab');
-export const CSV_SEPARATOR_SEMICOLON = Symbol.for('csv_separator_semicolon');
-export const CSV_SEPARATOR_COMMA = Symbol.for('csv_separator_comma');
+export const CSV_SEPARATOR_TAB = '\t';
+export const CSV_SEPARATOR_SEMICOLON = ';';
+export const CSV_SEPARATOR_COMMA = ',';
 
 export const CSVSeparatorList = [
     CSV_SEPARATOR_TAB,
     CSV_SEPARATOR_SEMICOLON,
     CSV_SEPARATOR_COMMA
 ];
-
-export const CSVSeparatorMap = new Map([
-    [CSV_SEPARATOR_TAB, '\t'],
-    [CSV_SEPARATOR_SEMICOLON, ';'],
-    [CSV_SEPARATOR_COMMA, ',']
-]);
 
 export const CSVSeparatorNameMap = new Map([
     [CSV_SEPARATOR_TAB, 'tab'],
@@ -22,7 +16,7 @@ export const CSVSeparatorNameMap = new Map([
 
 export function getSeparatorsAsSelectFieldOptions() {
     return CSVSeparatorList.map(separator => ({
-        value: CSVSeparatorMap.get(separator),
+        value: separator,
         text: CSVSeparatorNameMap.get(separator)
     }));
 }
@@ -32,10 +26,8 @@ function trim(str) {
 }
 
 export function parseCSVAsMatrix(CSV, separator = CSV_SEPARATOR_COMMA) {
-    const separatorChar = CSVSeparatorMap.get(separator);
-
     function breakColumns(line) {
-        return line.split(separatorChar).map(trim);
+        return line.split(separator).map(trim);
     }
 
     return trim(CSV)

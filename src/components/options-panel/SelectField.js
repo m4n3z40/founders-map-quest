@@ -8,13 +8,7 @@ function makeOnChangeHandler(props) {
         return options;
     }, {});
 
-    return e => {
-        const nextValue = e.target.value;
-
-        if (nextValue !== props.value.toString()) {
-            props.onChange(optionsMap[nextValue], e);
-        }
-    };
+    return e => props.onChange(optionsMap[e.target.value], e);
 }
 
 export default function SelectField(props) {

@@ -1,3 +1,4 @@
+import {makeSubStateReducer} from '../utils/shared';
 import {IMPORT_CSV_START, IMPORT_CSV_ERROR, IMPORT_CSV_SUCCESS} from '../actions/csvImporter';
 import {parseCSV} from '../utils/csv';
 
@@ -17,22 +18,16 @@ function handleImportCSVError(state, action) {
     return makeCsvDataState(false, action.error, state.csvData);
 }
 
-function handleImportCSVSuccess(state, action) {
-    return makeCsvDataState(false, null, parseCSV(action.csv));
+function handleImportCSVSuccess(state, action, appState) {
+    const separator = appState.importOptions ? appState.importOptions.separator : undefined;
+
+    return makeCsvDataState(false, null, parseCSV(action.csv, separator));
 }
 
-const initialState = makeCsvDataState();
-
-const actionHandlers = new Map([
+const actionHandlers = [
     [IMPORT_CSV_START, handleImportCSVStart],
     [IMPORT_CSV_ERROR, handleImportCSVError],
     [IMPORT_CSV_SUCCESS, handleImportCSVSuccess]
-]);
+];
 
-export default function csvData(state = initialState, action) {
-    if (actionHandlers.has(action.type)) {
-        return actionHandlers.get(action.type)(state, action);
-    }
-
-    return initialState;
-}
+export default makeSubStateReducer(makeCsvDataState(), actionHandlers);
