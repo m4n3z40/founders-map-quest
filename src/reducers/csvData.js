@@ -3,29 +3,37 @@ import {IMPORT_CSV_START, IMPORT_CSV_ERROR, IMPORT_CSV_SUCCESS} from '../actions
 import {CSV_OPTIONS_CHANGE} from '../actions/csvImporterOptions';
 import {parseCSV} from '../utils/csv';
 
-function makeCsvDataState(loading = false, error = null, csvText = '', csvData = null) {
+function makeCsvDataState(loading = false, error = null, textData = '', tableData = null) {
     return {
         loading,
         error,
-        csvText,
-        csvData
+        textData,
+        tableData
     };
 }
 
 function handleImportCSVStart(state) {
-    return makeCsvDataState(true, null, state.csvText, state.csvData);
+    return makeCsvDataState(true, null, state.textData, state.tableData);
 }
 
 function handleImportCSVError(state, action) {
-    return makeCsvDataState(false, action.error, state.csvText, state.csvData);
+    return makeCsvDataState(false, action.error, state.textData, state.tableData);
 }
 
 function handleImportCSVSuccess(state, action, {importOptions}) {
-    return makeCsvDataState(false, null, action.csv, parseCSV(action.csv, importOptions.separator));
+    const tableData = parseCSV(action.csv, importOptions.separator);
+
+    return makeCsvDataState(false, null, action.csv, tableData);
 }
 
 function handleImportOptionsChange(state, {options}) {
-    return makeCsvDataState(false, null, state.csvText, parseCSV(state.csvText, options.separator));
+    let tableData = null;
+
+    if (state.textData) {
+        tableData = parseCSV(state.textData, options.separator);
+    }
+
+    return makeCsvDataState(false, null, state.textData, tableData);
 }
 
 const actionHandlers = [

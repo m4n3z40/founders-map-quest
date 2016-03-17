@@ -50,3 +50,10 @@ export function parseCSV(CSV, separator = CSV_SEPARATOR_COMMA) {
         body: CSVMatrix.slice(1)
     };
 }
+
+export function arrayRowAsSelectFieldOptions(csvRow) {
+    return csvRow.map(columnName => ({
+        value: columnName,
+        text: columnName
+    }));
+}

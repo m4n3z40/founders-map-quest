@@ -2,10 +2,17 @@ import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
 import cx from 'classnames';
 import {changeOptions} from '../../actions/csvImporterOptions';
+import {arrayRowAsSelectFieldOptions} from '../../utils/csv';
 import SelectField from './SelectField';
 
 function handleChange(field, {value}) {
     this.onChange({[field]: value});
+}
+
+function mapStateToProps({csvData: {tableData}}) {
+    return {
+        columnsOptions: tableData ? arrayRowAsSelectFieldOptions(tableData.header) : null
+    };
 }
 
 function mapDispatchToProps(dispatch) {
@@ -14,6 +21,73 @@ function mapDispatchToProps(dispatch) {
             dispatch(changeOptions(nextOptions));
         }
     };
+}
+
+function renderColumnConfigOptions(parentProps) {
+    if (!parentProps.columnsOptions || parentProps.columnsOptions.length === 0) {
+        return <span style={{display: 'none'}} />;
+    }
+
+    return (
+        <div>
+            <SelectField
+                id="sltMarkerField"
+                className="col-md-8"
+                label="Marker Label Column"
+                labelClassName="col-md-4"
+                options={parentProps.columnsOptions}
+                onChange={handleChange.bind(parentProps, 'markerLabelField')}
+            />
+            <SelectField
+                id="sltLatitudeField"
+                className="col-md-8"
+                label="Latitude Column"
+                labelClassName="col-md-4"
+                options={parentProps.columnsOptions}
+                onChange={handleChange.bind(parentProps, 'latitudeField')}
+            />
+            <SelectField
+                id="sltLongitudeField"
+                className="col-md-8"
+                label="Longitude Column"
+                labelClassName="col-md-4"
+                options={parentProps.columnsOptions}
+                onChange={handleChange.bind(parentProps, 'longitudeField')}
+            />
+            <SelectField
+                id="sltCityField"
+                className="col-md-8"
+                label="City Column"
+                labelClassName="col-md-4"
+                options={parentProps.columnsOptions}
+                onChange={handleChange.bind(parentProps, 'cityField')}
+            />
+            <SelectField
+                id="sltCountryField"
+                className="col-md-8"
+                label="Country Column"
+                labelClassName="col-md-4"
+                options={parentProps.columnsOptions}
+                onChange={handleChange.bind(parentProps, 'countryField')}
+            />
+            <SelectField
+                id="sltStreetField"
+                className="col-md-8"
+                label="Street Column"
+                labelClassName="col-md-4"
+                options={parentProps.columnsOptions}
+                onChange={handleChange.bind(parentProps, 'streetField')}
+            />
+            <SelectField
+                id="sltPostalCodeField"
+                className="col-md-8"
+                label="Postal Code Column"
+                labelClassName="col-md-4"
+                options={parentProps.columnsOptions}
+                onChange={handleChange.bind(parentProps, 'postalCodeField')}
+            />
+        </div>
+    );
 }
 
 function OptionsPanel(props) {
@@ -29,62 +103,7 @@ function OptionsPanel(props) {
                     options={props.separatorOptions}
                     onChange={handleChange.bind(props, 'separator')}
                 />
-                <SelectField
-                    id="sltMarkerField"
-                    className="col-md-8"
-                    label="Marker Label Column"
-                    labelClassName="col-md-4"
-                    options={props.columnsOptions}
-                    onChange={handleChange.bind(props, 'markerLabelField')}
-                />
-                <SelectField
-                    id="sltLatitudeField"
-                    className="col-md-8"
-                    label="Latitude Column"
-                    labelClassName="col-md-4"
-                    options={props.columnsOptions}
-                    onChange={handleChange.bind(props, 'latitudeField')}
-                />
-                <SelectField
-                    id="sltLongitudeField"
-                    className="col-md-8"
-                    label="Longitude Column"
-                    labelClassName="col-md-4"
-                    options={props.columnsOptions}
-                    onChange={handleChange.bind(props, 'longitudeField')}
-                />
-                <SelectField
-                    id="sltCityField"
-                    className="col-md-8"
-                    label="City Column"
-                    labelClassName="col-md-4"
-                    options={props.columnsOptions}
-                    onChange={handleChange.bind(props, 'cityField')}
-                />
-                <SelectField
-                    id="sltCountryField"
-                    className="col-md-8"
-                    label="Country Column"
-                    labelClassName="col-md-4"
-                    options={props.columnsOptions}
-                    onChange={handleChange.bind(props, 'countryField')}
-                />
-                <SelectField
-                    id="sltStreetField"
-                    className="col-md-8"
-                    label="Street Column"
-                    labelClassName="col-md-4"
-                    options={props.columnsOptions}
-                    onChange={handleChange.bind(props, 'streetField')}
-                />
-                <SelectField
-                    id="sltPostalCodeField"
-                    className="col-md-8"
-                    label="Postal Code Column"
-                    labelClassName="col-md-4"
-                    options={props.columnsOptions}
-                    onChange={handleChange.bind(props, 'postalCodeField')}
-                />
+                {renderColumnConfigOptions(props)}
             </div>
         </div>
     );
@@ -97,4 +116,4 @@ OptionsPanel.propTypes = {
     columnsOptions: PropTypes.arrayOf(PropTypes.object)
 };
 
-export default connect(null, mapDispatchToProps)(OptionsPanel);
+export default connect(mapStateToProps, mapDispatchToProps)(OptionsPanel);

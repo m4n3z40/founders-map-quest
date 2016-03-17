@@ -1,10 +1,21 @@
 import React, {PropTypes} from 'react';
+import {connect} from 'react-redux';
 import cx from 'classnames';
 import DataTableHeader from './DataTableHeader';
 import DataTableBody from './DataTableBody';
 import DataTableRow from './DataTableRow';
 
-export default function DataTable({className, title, data}) {
+function mapStateToProps({csvData}) {
+    return {
+        data: csvData.tableData
+    };
+}
+
+function DataTable({className, title, data}) {
+    if (!data) {
+        return <span style={{display: 'none'}} />;
+    }
+
     return (
         <div className={cx('table-container table-responsive', className)}>
             <h4>{title}</h4>
@@ -28,5 +39,7 @@ DataTable.propTypes = {
     data: PropTypes.shape({
         header: PropTypes.arrayOf(PropTypes.string).isRequired,
         body: PropTypes.arrayOf(PropTypes.array).isRequired
-    }).isRequired
+    })
 };
+
+export default connect(mapStateToProps)(DataTable);
