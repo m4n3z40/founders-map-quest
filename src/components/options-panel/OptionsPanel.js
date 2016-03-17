@@ -4,7 +4,7 @@ import cx from 'classnames';
 import {changeOptions} from '../../actions/csvImporterOptions';
 import SelectField from './SelectField';
 
-function handleChange(field, value) {
+function handleChange(field, {value}) {
     this.onChange({[field]: value});
 }
 

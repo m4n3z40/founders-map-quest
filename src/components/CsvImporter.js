@@ -58,7 +58,7 @@ function handleDropFileOver(e) {
         textAreaEl.dispatchEvent(new Event('input', {bubbles: true}));
     };
 
-    fileReader.readAsText(file);
+    fileReader.readAsText(file, 'utf-8');
 
     return false;
 }
