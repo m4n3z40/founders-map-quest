@@ -28,17 +28,19 @@ function makeLabel(label) {
     return label;
 }
 
-export function makeMarkersProp(tableData, importOptions) {
+export function makeMarkersProp(tableData, importOptions, disabledRows) {
     const {latitudeField, longitudeField} = importOptions;
     const {header, body} = tableData;
     const latitudeColIdx = header.indexOf(latitudeField);
     const longitudeColIdx = header.indexOf(longitudeField);
     const labelColIdx = header.indexOf(importOptions.markerLabelField);
 
-    return body.map(tableRow => ({
-        latLng: [parseFloat(tableRow[latitudeColIdx]), parseFloat(tableRow[longitudeColIdx])],
-        label: labelColIdx !== -1 ? makeLabel(tableRow[labelColIdx]) : ''
-    }));
+    return body
+        .filter((tableRow, idx) => disabledRows.indexOf(idx) === -1)
+        .map(tableRow => ({
+            latLng: [parseFloat(tableRow[latitudeColIdx]), parseFloat(tableRow[longitudeColIdx])],
+            label: labelColIdx !== -1 ? makeLabel(tableRow[labelColIdx]) : ''
+        }));
 }
 
 export function makeLayerGroup(map) {

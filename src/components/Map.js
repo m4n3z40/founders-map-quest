@@ -3,12 +3,12 @@ import {connect} from 'react-redux';
 import cx from 'classnames';
 import {mountMap, makeMarkersProp, makeLayerGroup, removeMarkers, addMarkers} from '../utils/map';
 
-function mapStateToProps({csvData, importOptions}) {
+function mapStateToProps({csvData, importOptions, dataTableOptions}) {
     const tableData = csvData.tableData;
     let markers = [];
 
     if (tableData && importOptions.latitudeField && importOptions.longitudeField) {
-        markers = makeMarkersProp(tableData, importOptions);
+        markers = makeMarkersProp(tableData, importOptions, dataTableOptions.disabledRows);
     }
 
     return {markers};
