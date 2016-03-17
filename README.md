@@ -13,4 +13,4 @@ Founder's Map Quest (Coding Challenge)
 
 ### Testing
 
-* npm test
+* ```npm test```
