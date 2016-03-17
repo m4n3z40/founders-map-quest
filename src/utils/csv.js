@@ -36,7 +36,11 @@ export function parseCSVAsMatrix(CSV, separator = CSV_SEPARATOR_COMMA) {
         return line.split(CSVSeparatorMap.get(separator)).map(trim);
     }
 
-    return trim(CSV)
+    const csvText = trim(CSV);
+
+    if (csvText === '') return null;
+
+    return csvText
         .replace(/\r\n/g, '\n')
         .split('\n')
         .map(breakColumns);
@@ -45,6 +49,8 @@ export function parseCSVAsMatrix(CSV, separator = CSV_SEPARATOR_COMMA) {
 export function parseCSV(CSV, separator = CSV_SEPARATOR_COMMA) {
     const CSVMatrix = parseCSVAsMatrix(CSV, separator);
 
+    if (!CSVMatrix) return null;
+
     return {
         header: CSVMatrix[0],
         body: CSVMatrix.slice(1)
@@ -52,8 +58,15 @@ export function parseCSV(CSV, separator = CSV_SEPARATOR_COMMA) {
 }
 
 export function arrayRowAsSelectFieldOptions(csvRow) {
-    return csvRow.map(columnName => ({
+    const initialValues = [
+        {
+            value: '',
+            text: 'Chose field'
+        }
+    ];
+
+    return initialValues.concat(csvRow.map(columnName => ({
         value: columnName,
         text: columnName
-    }));
+    })));
 }

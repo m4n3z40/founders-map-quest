@@ -24,8 +24,10 @@ export default function App() {
                                    and drop the CSV file onto the same field."
                         />
                         <Map title="Generated Map" style={{height: 300}} />
-                        <DataTable title="GeneratedTable" />
                     </main>
+                </div>
+                <div className="row">
+                    <DataTable className="col-sm-12" title="Generated Table" />
                 </div>
             </div>
         </div>

@@ -72,3 +72,19 @@ test('parseCSV parses CSV and returns a object when separator is tab', t => {
 
     t.end();
 });
+
+test('parseCSVAsMatrix returns null when CSV text is not valid', t => {
+    const actualObject = parseCSVAsMatrix('      ', CSV_SEPARATOR_COMMA);
+
+    t.same(actualObject, null);
+
+    t.end();
+});
+
+test('parseCSV returns null when CSV text is not valid', t => {
+    const actualObject = parseCSV('      ', CSV_SEPARATOR_COMMA);
+
+    t.same(actualObject, null);
+
+    t.end();
+});

@@ -9,8 +9,9 @@ function handleChange(field, {value}) {
     this.onChange({[field]: value});
 }
 
-function mapStateToProps({csvData: {tableData}}) {
+function mapStateToProps({importOptions, csvData: {tableData}}) {
     return {
+        importOptions,
         columnsOptions: tableData ? arrayRowAsSelectFieldOptions(tableData.header) : null
     };
 }
@@ -24,9 +25,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 function renderColumnConfigOptions(parentProps) {
-    if (!parentProps.columnsOptions || parentProps.columnsOptions.length === 0) {
-        return <span style={{display: 'none'}} />;
-    }
+    const disabled = !parentProps.columnsOptions || parentProps.columnsOptions.length === 0;
 
     return (
         <div>
@@ -35,6 +34,7 @@ function renderColumnConfigOptions(parentProps) {
                 className="col-md-8"
                 label="Marker Label Column"
                 labelClassName="col-md-4"
+                disabled={disabled}
                 options={parentProps.columnsOptions}
                 onChange={handleChange.bind(parentProps, 'markerLabelField')}
             />
@@ -43,6 +43,7 @@ function renderColumnConfigOptions(parentProps) {
                 className="col-md-8"
                 label="Latitude Column"
                 labelClassName="col-md-4"
+                disabled={disabled}
                 options={parentProps.columnsOptions}
                 onChange={handleChange.bind(parentProps, 'latitudeField')}
             />
@@ -51,6 +52,7 @@ function renderColumnConfigOptions(parentProps) {
                 className="col-md-8"
                 label="Longitude Column"
                 labelClassName="col-md-4"
+                disabled={disabled}
                 options={parentProps.columnsOptions}
                 onChange={handleChange.bind(parentProps, 'longitudeField')}
             />
@@ -59,6 +61,7 @@ function renderColumnConfigOptions(parentProps) {
                 className="col-md-8"
                 label="City Column"
                 labelClassName="col-md-4"
+                disabled={disabled}
                 options={parentProps.columnsOptions}
                 onChange={handleChange.bind(parentProps, 'cityField')}
             />
@@ -67,6 +70,7 @@ function renderColumnConfigOptions(parentProps) {
                 className="col-md-8"
                 label="Country Column"
                 labelClassName="col-md-4"
+                disabled={disabled}
                 options={parentProps.columnsOptions}
                 onChange={handleChange.bind(parentProps, 'countryField')}
             />
@@ -75,6 +79,7 @@ function renderColumnConfigOptions(parentProps) {
                 className="col-md-8"
                 label="Street Column"
                 labelClassName="col-md-4"
+                disabled={disabled}
                 options={parentProps.columnsOptions}
                 onChange={handleChange.bind(parentProps, 'streetField')}
             />
@@ -83,6 +88,7 @@ function renderColumnConfigOptions(parentProps) {
                 className="col-md-8"
                 label="Postal Code Column"
                 labelClassName="col-md-4"
+                disabled={disabled}
                 options={parentProps.columnsOptions}
                 onChange={handleChange.bind(parentProps, 'postalCodeField')}
             />
@@ -101,6 +107,7 @@ function OptionsPanel(props) {
                     label="Separator"
                     labelClassName="col-md-4"
                     options={props.separatorOptions}
+                    value={props.importOptions.separator}
                     onChange={handleChange.bind(props, 'separator')}
                 />
                 {renderColumnConfigOptions(props)}
@@ -112,6 +119,7 @@ function OptionsPanel(props) {
 OptionsPanel.propTypes = {
     className: PropTypes.string,
     title: PropTypes.string,
+    importOptions: PropTypes.object.isRequired,
     separatorOptions: PropTypes.arrayOf(PropTypes.object),
     columnsOptions: PropTypes.arrayOf(PropTypes.object)
 };

@@ -11,10 +11,23 @@ function makeOnChangeHandler(props) {
     return e => props.onChange(optionsMap[e.target.value], e);
 }
 
+function renderOptions(options) {
+    if (!options || options.length === 0) {
+        return <option value="">No fields available</option>;
+    }
+
+    return options.map((option, idx) => (
+        <option key={`options-${idx}-${option.value}`} value={option.value}>
+            {option.text}
+        </option>
+    ));
+}
+
 export default function SelectField(props) {
     const sltProps = Object.assign({}, props);
+    const {options} = props;
 
-    if (props.onChange) {
+    if (options && options.length > 0 && props.onChange) {
         sltProps.onChange = makeOnChangeHandler(props);
     }
 
@@ -25,11 +38,7 @@ export default function SelectField(props) {
             </label>
             <div className={sltProps.className}>
                 <select {...sltProps} className="form-control">
-                    {props.options.map(option => (
-                        <option key={`options-${option.value}`} value={option.value}>
-                            {option.text}
-                        </option>
-                    ))}
+                    {renderOptions(options)}
                 </select>
             </div>
         </div>
@@ -44,6 +53,6 @@ SelectField.propTypes = {
     options: PropTypes.arrayOf(PropTypes.shape({
         text: PropTypes.string.isRequired,
         value: PropTypes.any.isRequired
-    })).isRequired,
+    })),
     onChange: PropTypes.func
 };
