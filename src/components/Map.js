@@ -41,7 +41,6 @@ class Map extends Component {
         super(props);
 
         this._map = null;
-        this._markersMap = new WeakMap();
         this._markersLayer = null;
     }
 
@@ -54,27 +53,25 @@ class Map extends Component {
     componentWillReceiveProps({markers}) {
         const map = this._map;
         const oldMarkers = this.props.markers;
-        const markersMap = this._markersMap;
         const markersLayer = this._markersLayer;
 
-        if ((!markers || markers.length === 0) && (oldMarkers && oldMarkers.length > 0)) {
+        if (oldMarkers && oldMarkers.length > 0) {
             markersLayer.eachLayer(layer => markersLayer.removeLayer(layer));
-            markersMap.clear();
-
-            return;
         }
+
+        if (!markers || markers.length === 0) return;
 
         markers.forEach(marker => {
             const markerLayer = getLeaflet().marker(marker.latLng, marker.options);
 
             if (marker.label) {
-                markerLayer.bindPopup(marker.label).openPopup();
+                markerLayer.bindPopup(marker.label);
             }
 
             markersLayer.addLayer(markerLayer);
-            markersMap.set(marker, markerLayer);
-            map.fitBounds(markersLayer.getBounds());
         });
+
+        map.fitBounds(markersLayer.getBounds());
     }
 
     render() {
