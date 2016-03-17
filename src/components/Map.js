@@ -1,36 +1,14 @@
 import React, {PropTypes, Component} from 'react';
 import {connect} from 'react-redux';
 import cx from 'classnames';
-
-function getLeaflet() {
-    return global.L;
-}
-
-function mountMap(mapEl, cmpProps) {
-    const L = getLeaflet();
-
-    const map = L.map(mapEl, Object.assign({}, cmpProps.defaultOptions, cmpProps.options));
-
-    L.tileLayer(cmpProps.tileLayerURL, cmpProps.tileLayerOptions).addTo(map);
-
-    return map;
-}
+import {mountMap, makeMarkersProp, makeLayerGroup, removeMarkers, addMarkers} from '../utils/map';
 
 function mapStateToProps({csvData, importOptions}) {
     const tableData = csvData.tableData;
-    const {latitudeField, longitudeField} = importOptions;
     let markers = [];
 
-    if (tableData && latitudeField && longitudeField) {
-        const {header, body} = tableData;
-        const latitudeColIdx = header.indexOf(latitudeField);
-        const longitudeColIdx = header.indexOf(longitudeField);
-        const labelColIdx = header.indexOf(importOptions.markerLabelField);
-
-        markers = body.map(tableRow => ({
-            latLng: [parseFloat(tableRow[latitudeColIdx]), parseFloat(tableRow[longitudeColIdx])],
-            label: labelColIdx !== -1 ? tableRow[labelColIdx] : ''
-        }));
+    if (tableData && importOptions.latitudeField && importOptions.longitudeField) {
+        markers = makeMarkersProp(tableData, importOptions);
     }
 
     return {markers};
@@ -46,32 +24,20 @@ class Map extends Component {
 
     componentDidMount() {
         this._map = mountMap(this.refs.mapEl, this.props);
-
-        this._markersLayer = getLeaflet().featureGroup().addTo(this._map);
+        this._markersLayer = makeLayerGroup(this._map);
     }
 
     componentWillReceiveProps({markers}) {
-        const map = this._map;
         const oldMarkers = this.props.markers;
         const markersLayer = this._markersLayer;
 
         if (oldMarkers && oldMarkers.length > 0) {
-            markersLayer.eachLayer(layer => markersLayer.removeLayer(layer));
+            removeMarkers(markersLayer);
         }
 
         if (!markers || markers.length === 0) return;
 
-        markers.forEach(marker => {
-            const markerLayer = getLeaflet().marker(marker.latLng, marker.options);
-
-            if (marker.label) {
-                markerLayer.bindPopup(marker.label);
-            }
-
-            markersLayer.addLayer(markerLayer);
-        });
-
-        map.fitBounds(markersLayer.getBounds());
+        addMarkers(this._map, markersLayer, markers);
     }
 
     render() {
